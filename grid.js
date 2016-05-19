@@ -18,12 +18,12 @@ function calendarWeekHour(id, width, height, square)
 
     var row = grid.selectAll(".row")
                   .data(calData)
-                .enter().append("svg:g")
+                  .enter().append("svg:g")
                   .attr("class", "row");
 
     var col = row.selectAll(".cell")
                  .data(function (d) { return d; })
-                .enter().append("svg:rect")
+                 .enter().append("svg:rect")
                  .attr("class", "cell")
                  .attr("x", function(d) { return d.x; })
                  .attr("y", function(d) { return d.y; })
@@ -46,23 +46,12 @@ function calendarWeekHour(id, width, height, square)
 
 ////////////////////////////////////////////////////////////////////////
 
-/**
-*   randomData()        returns an array: [
-                                            [{id:value, ...}],
-                                            [{id:value, ...}],
-                                            [...],...,
-                                            ];
-                        ~ [
-                            [hour1, hour2, hour3, ...],
-                            [hour1, hour2, hour3, ...]
-                          ]
-
-*/
 function randomData(gridWidth, gridHeight, square)
 {
     var data = new Array();
-    var gridItemWidth = gridWidth / 24;
-    var gridItemHeight = (square) ? gridItemWidth : gridHeight / 7;
+    var gridItemWidth = gridWidth / 1000;
+    var gridItemHeight = gridHeight / 1000;
+    //var gridItemHeight = (square) ? gridItemWidth : gridHeight / 7;
     var startX = gridItemWidth / 2;
     var startY = gridItemHeight / 2;
     var stepX = gridItemWidth;
@@ -72,10 +61,10 @@ function randomData(gridWidth, gridHeight, square)
     var newValue = 0;
     var count = 0;
 
-    for (var index_a = 0; index_a < 7; index_a++)
+    for (var index_a = 0; index_a < 100; index_a++)
     {
         data.push(new Array());
-        for (var index_b = 0; index_b < 24; index_b++)
+        for (var index_b = 0; index_b < 100; index_b++)
         {
             newValue = Math.round(Math.random() * (100 - 1) + 1);
             data[index_a].push({ 
