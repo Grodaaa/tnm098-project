@@ -8,10 +8,24 @@
 </head>
 <body>
 	<div id="chart"></div>
-
 	<script type="text/javascript" src="grid.js"></script>
 	<script type="text/javascript">
+		var svg = d3.select("body")
+		        .append("svg")
+		        .attr("width", 404)
+		        .attr("height", 401)
+		        .style("border", "1px solid black");
+
+		var imgs = svg.selectAll("image").data([0]);
+            		imgs.enter()
+            		.append("svg:image")
+	                .attr("xlink:href", "file:img/map.jpg")
+	                .attr("x", "0")
+	                .attr("y", "0")
+	                .attr("width", "404")
+	                .attr("height", "401");
 	    calendarWeekHour('#chart', 4044, 4013, true);
 	</script>
+
 </body>
 </html>
