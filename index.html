@@ -8,45 +8,56 @@
 </head>
 <body>
 	<div id="chart"></div>
-	<script type="text/javascript" src="grid.js"></script>
 	<script type="text/javascript">
     //calendarWeekHour('#chart', 4044, 4013, true);
 	    var svg = d3.select("body")
 		        .append("svg")
-		        .attr("width", 404)
-		        .attr("height", 401)
+		        .attr("width", 808)
+		        .attr("height", 802)
 		        .style("border", "1px solid black");
 
 		var imgs = svg.selectAll("image").data([0]);
             		imgs.enter()
             		.append("svg:image")
-	                .attr("xlink:href", "file:img/map.jpg")
+	                .attr("xlink:href", "img/map.jpg")
 	                .attr("x", "0")
 	                .attr("y", "0")
-	                .attr("width", "404")
-	                .attr("height", "401");
+	                .attr("width", "808")
+	                .attr("height", "802");
 		 
 		// Using for loop to draw multiple horizontal lines
-		for (var j=0; j <= 404; j=j+2) {
+		for (var j=0; j < 808; j=j+8,08) {
 		    svg.append("svg:line")
 		        .attr("x1", 0)
 		        .attr("y1", j)
-		        .attr("x2", 404)
+		        .attr("x2", 808)
 		        .attr("y2", j)
 		        .style("stroke", "rgb(6,120,155)")
 		        .style("stroke-width", 0.2);            
 		};
 		 
 		// Using for loop to draw multiple vertical lines
-		for (var j=0; j <= 401; j=j+2) {
+		for (var j=0; j < 802; j=j+8,02) {
 		    svg.append("svg:line")
 		        .attr("x1", j)
 		        .attr("y1", 0)
 		        .attr("x2", j)
-		        .attr("y2", 401)
+		        .attr("y2", 802)
 		        .style("stroke", "rgb(6,120,155)")
 		        .style("stroke-width", 0.2);            
 		};
+/*
+		d3.csv("example.csv", function(d) {
+			return {
+				year: new Date(+d.Year, 0, 1), // convert "Year" column to Date
+				make: d.Make,
+				model: d.Model,
+				length: +d.Length // convert "Length" column to number
+			};
+		}, function(error, rows) {
+			console.log(rows);
+		});*/
+
 	</script>
 
 </body>
