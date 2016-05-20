@@ -10,7 +10,7 @@
 function calendarWeekHour(id, width, height, square)
 {
     var calData = randomData(width, height, square);
-    console.log(calData);
+    
     var grid = d3.select(id).append("svg")
                     .attr("width", width)
                     .attr("height", height)
@@ -29,19 +29,19 @@ function calendarWeekHour(id, width, height, square)
                  .attr("y", function(d) { return d.y; })
                  .attr("width", function(d) { return d.width; })
                  .attr("height", function(d) { return d.height; })
-                 .on('mouseover', function() {
-                    d3.select(this)
-                        .style('fill', 'rgba(255, 255, 255, 0.1)');
-                 })
-                 .on('mouseout', function() {
-                    d3.select(this)
-                        .style('fill', 'rgba(0, 128, 0, 0.5)');
-                 })
-                 .on('click', function() {
-                    console.log(d3.select(this));
-                 })
-                 .style("fill: transparent", 'rgba(255, 255, 255, 0.1)')
-                 .style("stroke", 'rgba(0, 0, 0, 0.2)');
+                 // .on('mouseover', function() {
+                 //    d3.select(this)
+                 //        //.style('fill', 'rgba(255, 255, 255, 0.1)');
+                 // })
+                 // .on('mouseout', function() {
+                 //    d3.select(this)
+                 //        //.style('fill', 'rgba(0, 128, 0, 0.5)');
+                 // })
+                 // .on('click', function() {
+                 //    console.log(d3.select(this));
+                 // })
+                 //.style("fill: transparent", 'rgba(255, 255, 255, 0.1)')
+                 //.style("stroke", 'rgba(0, 0, 0, 0.2)');
 }
 
 ////////////////////////////////////////////////////////////////////////
