@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Lab2</title>
+  <title>Project</title>
   <link rel="stylesheet" href="d3.slider.css" />  
 </head>
 <style>
@@ -30,9 +30,9 @@ body {
 <script src="d3.slider.js"></script>
 <script>
 
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+var margin = {top: 0, right: 0, bottom: 0, left: 0},
+    width = 808 - margin.left - margin.right,
+    height = 802 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
     .range([0, width]);
@@ -55,13 +55,33 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
-var svg = d3.select("body").append("svg")
+
+
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", 808)
+	.attr("height", 802)
+	.append("g")
+	.style("border", "1px solid black");
+
+var imgs = svg.selectAll("image").data([0]);
+	imgs.enter()
+	.append("svg:image")
+    .attr("xlink:href", "img/map.jpg")
+    .attr("x", "0")
+    .attr("y", "0")
+    .attr("width", "808")
+    .attr("height", "802");
+
+
+
+/*var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");*/
 
-d3.tsv("EyeTrack-raw.tsv", function(error, data) {
+d3.tsv("", function(error, data) {
   if (error) throw error;
 
   data.forEach(function(d) {
@@ -76,14 +96,13 @@ d3.tsv("EyeTrack-raw.tsv", function(error, data) {
 
   svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", "translate(0,802)")
       .call(xAxis)
-    .append("text")
+	.append("text")
       .attr("class", "label")
       .attr("x", width)
       .attr("y", -6)
-      .style("text-anchor", "end")
-      .text("Sepal Width (cm)");
+      .style("text-anchor", "end");
 
   svg.append("g")
       .attr("class", "y axis")
@@ -93,8 +112,7 @@ d3.tsv("EyeTrack-raw.tsv", function(error, data) {
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Sepal Length (cm)")
+      .style("text-anchor", "end");
 
   d3.select('#slider5').call(d3.slider().axis(true).min(1).max(744).step(1).on("slide", function(evt, value){ 
 
