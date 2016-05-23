@@ -75,14 +75,18 @@ d3.csv("data/test.csv", function(error, data) {
   if (error) throw error;
 
   data.forEach(function(d) {
-    d["GazePointY(px)"] = +d["GazePointY(px)"];
-    d["GazePointX(px)"] = +d["GazePointX(px)"];
+  	if(d["type"] === "check-in")
+  	{
+  		d["X"] = +d["X"];
+    	d["Y"] = +d["Y"];
+  	}
+    
   });
 
-  x.domain(d3.extent(data, function(d) { return d["GazePointX(px)"]; })).nice();
-  y.domain(d3.extent(data, function(d) { return d["GazePointY(px)"]; })).nice();
-  radius.domain(d3.extent(data, function(d) { return d["GazeEventDuration(mS)"]; })).nice();
-  time.domain(d3.extent(data, function(d) { return d["RecordingTimestamp"]; })).nice();
+  x.domain(d3.extent(data, function(d) { return d["X"]; })).nice();
+  y.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
+  radius.domain(d3.extent(data, function(d) { return d["X"]; })).nice();
+  time.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
 
   svg.append("g")
       .attr("class", "x axis")
@@ -110,9 +114,9 @@ d3.csv("data/test.csv", function(error, data) {
         .data(data)
         .enter().append("circle")
         .attr("class", "dot")
-        .attr("r", function(d) { return radius(d["GazeEventDuration(mS)"]); }) //Radien
-        .attr("cx", function(d) { return x(d["GazePointX(px)"]); })
-        .attr("cy", function(d) { return y(d["GazePointY(px)"]); });
+        .attr("r", function(d) { return radius(d["X"]); }) //Radien
+        .attr("cx", function(d) { return x(d["X"]); })
+        .attr("cy", function(d) { return y(d["Y"]); });
 
     d3.select(".dit").remove();
 
@@ -121,11 +125,11 @@ d3.csv("data/test.csv", function(error, data) {
       .enter().append("circle")
       .each(function(d,i) {if(i===value) {
         d3.select(this).attr("class", "dit")
-        .attr("r", function(d) { return radius(d["GazeEventDuration(mS)"]); }) //Radien
-        .attr("cx", function(d) { return x(d["GazePointX(px)"]); })
-        .attr("cy", function(d) { return y(d["GazePointY(px)"]); });
+        .attr("r", function(d) { return radius(d["X"]); }) //Radien
+        .attr("cx", function(d) { return x(d["Y"]); })
+        .attr("cy", function(d) { return y(d["Y"]); });
       }})
-      .style("fill", "red");
+      .style("fill", "black");
       d3.select('#slider4text').text(value);
 
   }));
