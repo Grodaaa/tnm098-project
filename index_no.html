@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+	<title>TNM098 - Projekt</title>
+	<script type="text/javascript" src="http://mbostock.github.com/d3/d3.v2.js"></script>
+</head>
+<body>
+	<div id="chart"></div>
+	<script type="text/javascript">
+    //calendarWeekHour('#chart', 4044, 4013, true);
+	    var svg = d3.select("body")
+		        .append("svg")
+		        .attr("width", 808)
+		        .attr("height", 802)
+		        .style("border", "1px solid black");
+
+		var imgs = svg.selectAll("image").data([0]);
+            		imgs.enter()
+            		.append("svg:image")
+	                .attr("xlink:href", "img/map.jpg")
+	                .attr("x", "0")
+	                .attr("y", "0")
+	                .attr("width", "808")
+	                .attr("height", "802");
+		 
+		// Using for loop to draw multiple horizontal lines
+		for (var j=0; j < 808; j=j+8,08) {
+		    svg.append("svg:line")
+		        .attr("x1", 0)
+		        .attr("y1", j)
+		        .attr("x2", 808)
+		        .attr("y2", j)
+		        .style("stroke", "rgb(6,120,155)")
+		        .style("stroke-width", 0.2);            
+		};
+		 
+		// Using for loop to draw multiple vertical lines
+		for (var j=0; j < 802; j=j+8,02) {
+		    svg.append("svg:line")
+		        .attr("x1", j)
+		        .attr("y1", 0)
+		        .attr("x2", j)
+		        .attr("y2", 802)
+		        .style("stroke", "rgb(6,120,155)")
+		        .style("stroke-width", 0.2);            
+		};
+		
+
+		d3.csv("data/park-movement-Fri-FIXED-2.0.csv", function(error, data) {
+			//Timestamp,id,type,X,Y
+			//2014-6-07 08:00:08,1102394,check-in,99,77
+  			if (error) throw error;
+  			
+  			data.forEach(function(d){
+  				if(Number(d.X) == 63)
+  				{
+  					console.log("Hej!");
+  				}
+  			}
+  			//return data;
+		});
+
+	</script>
+
+</body>
+</html>
