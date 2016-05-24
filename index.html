@@ -25,7 +25,7 @@ body {
 
 <body>
     <div id="slider5"></div>
-    <h2>Value på slidern: <span id="slider4text">0</span></h2>
+    <h2>Hour: <span id="slider4text">0</span></h2>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script src="d3.slider.js"></script>
 <script>
@@ -41,9 +41,9 @@ var y = d3.scale.linear()
     .range([height, 0]);
 
 var radius = d3.scale.linear()
-    .range([3, 10]);
+    .range([5, 15]);
 
-var time = d3.scale.linear();
+var time2 = d3.scale.linear();
 
 var color = d3.scale.category10();
 
@@ -80,13 +80,12 @@ d3.csv("data/test.csv", function(error, data) {
   		d["X"] = +d["X"];
     	d["Y"] = +d["Y"];
   	}
-    
   });
 
   x.domain(d3.extent(data, function(d) { return d["X"]; })).nice();
   y.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
   radius.domain(d3.extent(data, function(d) { return d["X"]; })).nice();
-  time.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
+  time2.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
 
   svg.append("g")
       .attr("class", "x axis")
@@ -108,7 +107,9 @@ d3.csv("data/test.csv", function(error, data) {
       .attr("dy", ".71em")
       .style("text-anchor", "end");
 
-  d3.select('#slider5').call(d3.slider().axis(true).min(1).max(744).step(1).on("slide", function(evt, value){ 
+  //console.log(hourParser(hour));
+
+  d3.select('#slider5').call(d3.slider().axis(true).min(7).max(23).step(1).on("slide", function(evt, value){ 
 
     svg.selectAll(".dot")
         .data(data)
