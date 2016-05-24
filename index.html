@@ -31,8 +31,8 @@ body {
 <script>
 
 var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    width = 808 - margin.left - margin.right,
-    height = 802 - margin.top - margin.bottom;
+    width = 606 - margin.left - margin.right,
+    height = 601.5 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
     .range([0, width]);
@@ -59,8 +59,8 @@ var newData = [];
 
 var svg = d3.select("body")
 	.append("svg")
-	.attr("width", 808)
-	.attr("height", 802)
+	.attr("width", 606)
+	.attr("height", 601.5)
 	.append("g")
 	.style("border", "1px solid black");
 
@@ -70,8 +70,8 @@ var imgs = svg.selectAll("image").data([0]);
     .attr("xlink:href", "img/map.jpg")
     .attr("x", "0")
     .attr("y", "0")
-    .attr("width", "808")
-    .attr("height", "802");
+    .attr("width", "606")
+    .attr("height", "601.5");
 
 d3.csv("data/test.csv", function(error, data) {
   if (error) throw error;
@@ -95,7 +95,7 @@ d3.csv("data/test.csv", function(error, data) {
   //y.domain([d3.min(newData, function(d) { return d.yCord; }), d3.max(newData, function(d) { return d.yCord; })+1]);
 
   radius.domain(d3.extent(data, function(d) { return 50; })).nice();
-  time.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
+  time2.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
 
   svg.append("g")
       .attr("class", "x axis")
@@ -123,31 +123,33 @@ d3.csv("data/test.csv", function(error, data) {
   d3.select('#slider5').call(d3.slider().axis(true).min(7).max(23).step(1).on("slide", function(evt, value){ 
 
     svg.selectAll(".dot")
-        .data(data)
+        .data(newData)
         .enter().append("circle")
         .attr("class", "dot")
         .attr("r", function(d) { return radius(5); }) //Radien
-        .attr("cx", function(d) { return x(d.xCord); })
-        .attr("cy", function(d) { return y(d.yCord); });
-
+        .attr("cx", function(d) { 
+        	console.log(d.xCord); 
+        	var xValue = d.xCord*6.06;
+        	return x(xValue); })
+        .attr("cy", function(d) { 
+        	console.log(d.yCord); 
+        	var yValue = d.yCord*6.015;
+        	return y(yValue); });
+/*
     d3.select(".dit").remove();
 
     svg.selectAll(".dit")
-      .data(data)
-      .enter().append("circle")
-      .each(function(d,i) {if(i===value) {
-        d3.select(this).attr("class", "dit")
-        .attr("r", function(d) { return radius(4); }) //Radien
-        .attr("cx", function(d) { return x(d.xCord); })
-        .attr("cy", function(d) { return y(d.yCord); })
-      }})
-      .style("fill", "black");
-      d3.select('#slider4text').text(value);
-
+		.data(newData)
+			.enter().append("circle")
+			.each(function(d,i) {if(i===value) {
+				d3.select(this).attr("class", "dit")
+				.attr("r", function(d) { return radius(4); }) //Radien
+				.attr("cx", function(d) { console.log(d.xCord); return x(d.xCord); })
+				.attr("cy", function(d) { console.log(d.yCord); return y(d.yCord); })
+			}})
+		.style("fill", "black");*/
+		d3.select('#slider4text').text(value);
   }));
-
-
- 
 
   var legend = svg.selectAll(".legend")
       .data(color.domain())
