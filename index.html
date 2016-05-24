@@ -41,7 +41,7 @@ var y = d3.scale.linear()
     .range([height, 0]);
 
 var radius = d3.scale.linear()
-    .range([3, 10]);
+    .range([10, 10]);
 
 var time = d3.scale.linear();
 
@@ -54,6 +54,8 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
+
+var newData = [];
 
 var svg = d3.select("body")
 	.append("svg")
@@ -74,25 +76,32 @@ var imgs = svg.selectAll("image").data([0]);
 d3.csv("data/test.csv", function(error, data) {
   if (error) throw error;
 
-  data.forEach(function(d) {
-  	if(d["type"] === "check-in")
-  	{
-  		d["X"] = +d["X"];
-    	d["Y"] = +d["Y"];
-  	}
-    
-  });
+  data.forEach(function(d, i) {
+    if(d.type === "check-in"){
+      var format = d3.time.format("%Y-%m-%d %H:%M:%S")
+      var hourParser = d3.time.format("%-H");
+      var hour = hourParser(d3.time.hour.round(format.parse(d["Timestamp"])));
 
-  x.domain(d3.extent(data, function(d) { return d["X"]; })).nice();
-  y.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
-  radius.domain(d3.extent(data, function(d) { return d["X"]; })).nice();
+      //console.log(hour);
+      newData.push({time: hour, xCord: d.X, yCord: d.Y});
+    }
+  });
+  //console.log(newData)
+      
+  // x.domain(newData.map(function(d) { console.log(d.xCord); return d.xCord; }));
+  // y.domain(newData.map(function(d) { console.log(d.yCord); return d.yCord; }));
+  x.domain([d3.min(newData, function(d) { return d.xCord; }), d3.max(newData, function(d) { return d.xCord; })+1]);
+  y.domain([d3.min(newData, function(d) { return d.yCord; }), d3.max(newData, function(d) { return d.yCord; })+1]);
+  //y.domain([d3.min(newData, function(d) { return d.yCord; }), d3.max(newData, function(d) { return d.yCord; })+1]);
+
+  radius.domain(d3.extent(data, function(d) { return 50; })).nice();
   time.domain(d3.extent(data, function(d) { return d["Y"]; })).nice();
 
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0,801)")
       .call(xAxis)
-	.append("text")
+  .append("text")
       .attr("class", "label")
       .attr("x", width)
       .attr("y", -6)
@@ -108,15 +117,15 @@ d3.csv("data/test.csv", function(error, data) {
       .attr("dy", ".71em")
       .style("text-anchor", "end");
 
-  d3.select('#slider5').call(d3.slider().axis(true).min(1).max(744).step(1).on("slide", function(evt, value){ 
+  d3.select('#slider5').call(d3.slider().axis(true).min(7).max(23).step(1).on("slide", function(evt, value){ 
 
     svg.selectAll(".dot")
         .data(data)
         .enter().append("circle")
         .attr("class", "dot")
-        .attr("r", function(d) { return radius(d["X"]); }) //Radien
-        .attr("cx", function(d) { return x(d["X"]); })
-        .attr("cy", function(d) { return y(d["Y"]); });
+        .attr("r", function(d) { return radius(5); }) //Radien
+        .attr("cx", function(d) { return x(d.xCord); })
+        .attr("cy", function(d) { return y(d.yCord); });
 
     d3.select(".dit").remove();
 
@@ -125,14 +134,17 @@ d3.csv("data/test.csv", function(error, data) {
       .enter().append("circle")
       .each(function(d,i) {if(i===value) {
         d3.select(this).attr("class", "dit")
-        .attr("r", function(d) { return radius(d["X"]); }) //Radien
-        .attr("cx", function(d) { return x(d["Y"]); })
-        .attr("cy", function(d) { return y(d["Y"]); });
+        .attr("r", function(d) { return radius(4); }) //Radien
+        .attr("cx", function(d) { return x(d.xCord); })
+        .attr("cy", function(d) { return y(d.yCord); })
       }})
       .style("fill", "black");
       d3.select('#slider4text').text(value);
 
   }));
+
+
+ 
 
   var legend = svg.selectAll(".legend")
       .data(color.domain())
