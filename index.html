@@ -89,26 +89,30 @@ d3.csv("data/test.csv", function(error, data) {
   });*/
   //console.log(newData)
 
-  data.forEach(function(d, i) {
+  /*data.forEach(function(d, i) {
 	var format = d3.time.format("%Y-%m-%d %H:%M:%S")
 	var hourParser = d3.time.format("%-H");
 	d.Timestamp = hourParser(d3.time.hour.round(format.parse(d["Timestamp"])));
 
 	//console.log(hour);
 	//newData.push({time: hour, xCord: d.X, yCord: d.Y});
-  });
+  });*/
 
   var cf = crossfilter(data);
 
   var byType = cf.dimension(function(p){ return p.type; });
 
   byType.filterExact("check-in");
+
   byType.top(Infinity).forEach(function(p) {
+  	var format = d3.time.format("%Y-%m-%d %H:%M:%S")
+	var hourParser = d3.time.format("%-H");
+	p.Timestamp = hourParser(d3.time.hour.round(format.parse(p["Timestamp"])));
   	console.log(p.Timestamp + " : " + p.type);
   })
 
-  console.log(byType);
-      
+  //console.log(byType);
+   /*   
   // x.domain(newData.map(function(d) { console.log(d.xCord); return d.xCord; }));
   // y.domain(newData.map(function(d) { console.log(d.yCord); return d.yCord; }));
   x.domain([d3.min(newData, function(d) { return d.xCord; }), d3.max(newData, function(d) { return d.xCord; })+1]);
@@ -161,7 +165,7 @@ d3.csv("data/test.csv", function(error, data) {
 	        	return y(yValue); })
         }});
         
-/*
+
     d3.select(".dit").remove();
 
     svg.selectAll(".dit")
@@ -173,7 +177,7 @@ d3.csv("data/test.csv", function(error, data) {
 				.attr("cx", function(d) { console.log(d.xCord); return x(d.xCord); })
 				.attr("cy", function(d) { console.log(d.yCord); return y(d.yCord); })
 			}})
-		.style("fill", "black");*/
+		.style("fill", "black");
 		d3.select('#slider4text').text(value);
   }));
 
@@ -194,7 +198,7 @@ d3.csv("data/test.csv", function(error, data) {
       .attr("y", 9)
       .attr("dy", ".35em")
       .style("text-anchor", "end")
-      .text(function(d) { return d; });
+      .text(function(d) { return d; });*/
 });  
 
 </script>
