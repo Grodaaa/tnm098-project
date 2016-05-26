@@ -27,6 +27,7 @@ body {
     <div id="slider5"></div>
     <h2>Hour: <span id="slider4text">0</span></h2>
 <script src="//d3js.org/d3.v3.min.js"></script>
+<script src="crossfilter.v1.min.js"></script>
 <script src="d3.slider.js"></script>
 <script>
 
@@ -76,8 +77,8 @@ var imgs = svg.selectAll("image").data([0]);
 d3.csv("data/test.csv", function(error, data) {
   if (error) throw error;
 
-  data.forEach(function(d, i) {
-    if(d.type === "check-in"){
+  /*data.forEach(function(d, i) {
+    if(d.type == "check-in"){
       var format = d3.time.format("%Y-%m-%d %H:%M:%S")
       var hourParser = d3.time.format("%-H");
       var hour = hourParser(d3.time.hour.round(format.parse(d["Timestamp"])));
@@ -85,8 +86,28 @@ d3.csv("data/test.csv", function(error, data) {
       //console.log(hour);
       newData.push({time: hour, xCord: d.X, yCord: d.Y});
     }
-  });
+  });*/
   //console.log(newData)
+
+  data.forEach(function(d, i) {
+	var format = d3.time.format("%Y-%m-%d %H:%M:%S")
+	var hourParser = d3.time.format("%-H");
+	d.Timestamp = hourParser(d3.time.hour.round(format.parse(d["Timestamp"])));
+
+	//console.log(hour);
+	//newData.push({time: hour, xCord: d.X, yCord: d.Y});
+  });
+
+  var cf = crossfilter(data);
+
+  var byType = cf.dimension(function(p){ return p.type; });
+
+  byType.filterExact("check-in");
+  byType.top(Infinity).forEach(function(p) {
+  	console.log(p.Timestamp + " : " + p.type);
+  })
+
+  console.log(byType);
       
   // x.domain(newData.map(function(d) { console.log(d.xCord); return d.xCord; }));
   // y.domain(newData.map(function(d) { console.log(d.yCord); return d.yCord; }));
@@ -127,7 +148,7 @@ d3.csv("data/test.csv", function(error, data) {
     svg.selectAll(".dot")
         .data(newData)
         .enter().append("circle")
-        .each(function(d) {if(d.time == Number(value)){
+        .filter(function(d) {if(d.time == Number(value)){
         	d3.select(this).attr("class", "dot")
 	        .attr("r", function(d) { return radius(5); }) //Radien
 	        .attr("cx", function(d) { 
