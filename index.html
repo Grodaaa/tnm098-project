@@ -122,19 +122,24 @@ d3.csv("data/test.csv", function(error, data) {
 
   d3.select('#slider5').call(d3.slider().axis(true).min(7).max(23).step(1).on("slide", function(evt, value){ 
 
+    d3.selectAll(".dot").remove();
+
     svg.selectAll(".dot")
         .data(newData)
         .enter().append("circle")
-        .attr("class", "dot")
-        .attr("r", function(d) { return radius(5); }) //Radien
-        .attr("cx", function(d) { 
-        	console.log(d.xCord); 
-        	var xValue = d.xCord*6.06;
-        	return x(xValue); })
-        .attr("cy", function(d) { 
-        	console.log(d.yCord); 
-        	var yValue = d.yCord*6.015;
-        	return y(yValue); });
+        .each(function(d) {if(d.time == Number(value)){
+        	d3.select(this).attr("class", "dot")
+	        .attr("r", function(d) { return radius(5); }) //Radien
+	        .attr("cx", function(d) { 
+	        	console.log(d.xCord); 
+	        	var xValue = d.xCord*6.06;
+	        	return x(xValue); })
+	        .attr("cy", function(d) { 
+	        	console.log(d.yCord); 
+	        	var yValue = d.yCord*6.015;
+	        	return y(yValue); })
+        }});
+        
 /*
     d3.select(".dit").remove();
 
@@ -169,7 +174,6 @@ d3.csv("data/test.csv", function(error, data) {
       .attr("dy", ".35em")
       .style("text-anchor", "end")
       .text(function(d) { return d; });
-
 });  
 
 </script>
